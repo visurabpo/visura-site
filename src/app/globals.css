@@ -1,0 +1,141 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ink: #0b0f0e;
+  --teal: #2fbfae;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+}
+
+body {
+  @apply bg-ink-950 text-mist font-sans antialiased;
+  background-image: radial-gradient(
+      1200px 600px at 80% -10%,
+      rgba(47, 191, 174, 0.07),
+      transparent 60%
+    ),
+    radial-gradient(900px 500px at -10% 30%, rgba(47, 191, 174, 0.04), transparent 55%);
+}
+
+::selection {
+  background: rgba(47, 191, 174, 0.35);
+}
+
+/* Foco visível */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ---------- Reveal on scroll ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Marquee de clientes ---------- */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  animation: marquee 42s linear infinite;
+  width: max-content;
+}
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+
+/* ---------- Accordion (FAQ e escopo de serviços) ---------- */
+.acc-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.acc-panel[data-open="true"] {
+  grid-template-rows: 1fr;
+}
+.acc-inner {
+  overflow: hidden;
+}
+
+/* ---------- Traço do gráfico de fluxo de caixa ---------- */
+@keyframes trace {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.chart-line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.chart-line.is-in {
+  animation: trace 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+@keyframes fillFade {
+  to {
+    opacity: 1;
+  }
+}
+.chart-fill {
+  opacity: 0;
+}
+.chart-fill.is-in {
+  animation: fillFade 0.9s ease 1.2s forwards;
+}
+
+/* ---------- Padrão de setas Visura ---------- */
+.chevron-bg {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cpath d='M6 6l8 8-8 8' fill='none' stroke='%232FBFAE' stroke-opacity='0.10' stroke-width='2'/%3E%3C/svg%3E");
+}
+
+/* ---------- Movimento reduzido ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .marquee-track {
+    animation: none;
+  }
+  .chart-line.is-in,
+  .chart-fill.is-in {
+    animation: none;
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
